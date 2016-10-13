@@ -5,7 +5,7 @@
             "name": "Launch index.html with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "${workspaceRoot}/index.html",
+            "url": "http://localhost/mantion/mensiontask",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"
         },

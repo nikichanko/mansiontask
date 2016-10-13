@@ -8,7 +8,7 @@ Mansion.Functions.addEvents = function(el){
 
     Mansion.Functions.addEvents.prototype.apply = function(){
         el.addEventListener("click", function(){
-            console.log('1');
+            console.log('266');
         }, false);
     }
 
