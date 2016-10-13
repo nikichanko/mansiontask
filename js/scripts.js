@@ -11,8 +11,7 @@ Mansion.Functions.addEvents = function(el) {
             console.log('266');
         }, false);
     }
-}
-
+};
 
 //extend is equvalent of jQuery $.extend function
 Mansion.Functions.extend = function (defaults, options) {
@@ -32,17 +31,15 @@ Mansion.Functions.extend = function (defaults, options) {
         }
         return extended;
     }
-    Mansion.Functions.extend.prototype.getExtended = function(){
-        return this.buildExtended();
-    }
-}
+
+    return this.buildExtended();
+};
 
 var el = document.getElementById('niki');
 var obj = new Mansion.Functions.addEvents(el);
 obj.apply();
 
-var defaults = {'event1':1,'event2':2,'event2':3};
-var options = {'evat3':4};
-var obj1 = new  Mansion.Functions.extend(defaults, options);
-var return1 = obj1.getExtended();
-console.log(return1);
+var defaults = {'event1':1,'event2':2,'event3':3};
+var options = {'event2':4};
+var ret = Mansion.Functions.extend(defaults, options);
+console.log(ret);
