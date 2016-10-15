@@ -5,7 +5,7 @@
             "name": "Launch index.html with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost/mantion/mensiontask",
+            "url": "http://localhost/mansion/mansiontask",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"
         },
@@ -24,6 +24,26 @@
             "port": 9222,
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"
+        },
+        {
+            "name": "iOS - Launch localhost with sourcemaps",
+            "type": "ios",
+            "request": "launch",
+            "port": 9222,
+            "url": "http://localhost/mansion/mansiontask/",
+            "webRoot": "${workspaceRoot}",
+            "deviceName": "*",
+            "sourceMaps": true
+        },
+        {
+            "name": "iOS - Launch localhost with sourcemaps via Tunnel",
+            "type": "ios",
+            "request": "launch",
+            "port": 9222,
+            "webRoot": "${workspaceRoot}",
+            "deviceName": "*",
+            "sourceMaps": true,
+            "tunnelPort": 8080
         }
     ]
 }

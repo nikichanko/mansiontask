@@ -1,18 +1,17 @@
 // Mansion namespace
+
 var Mansion = Mansion || {};
 Mansion.Functions = Mansion.Functions || {};
-
-// addEvents is function which can apply any EventListener to element
-Mansion.Functions.addEvents = function(el) {
-    this.el = el;
-
-    Mansion.Functions.addEvents.prototype.apply = function(){
-        el.addEventListener("click", function(){
+/*
+Object.prototype.addEvents = function(){
+    var tar1 = this;
+            tar1.addEventListener("click", function(){
             console.log('266');
         }, false);
-    }
-};
+    return tar1;
+}
 
+*/
 //extend is equvalent of jQuery $.extend function
 Mansion.Functions.extend = function (defaults, options) {
     this.defaults = defaults;
@@ -35,11 +34,56 @@ Mansion.Functions.extend = function (defaults, options) {
     return this.buildExtended();
 };
 
-var el = document.getElementById('niki');
-var obj = new Mansion.Functions.addEvents(el);
-obj.apply();
+Mansion.Functions.mobile = function(options){
+    var defaults = {
+        mobile_icon: null,
+        mobile_menu: null,
+        menu: null,
+        onShowMenu: function(){},
+        onHideMenu: function(){}
+    };
+    this.settings = Mansion.Functions.extend(defaults, options);
+    Mansion.Functions.mobile.prototype.setmobile = function(){
+        if(!this.settings.mobile_icon.length || !this.settings.mobile_menu.length || !this.settings.menu.length)
+            return;
+        var obj = this;
+        obj.settings.mobile_icon.on('click', function(e){
+            e.preventDefault;
+            // click on mobile icon
+            if(!$.trim(obj.settings.mobile_menu.html())){
+                //if not visible and empty mobile menu build mobile menu
+                obj.settings.mobile_menu.append(obj.settings.menu.clone());
+            }
+            if(!obj.settings.mobile_menu.is(":visible")){
+                obj.settings.mobile_menu.show('fast').animate({
+                    opacity: 1
+                },200);
+                obj.settings.onShowMenu();
+            }else{
+                               obj.settings.mobile_menu.hide('fast').animate({
+                                   opacity: 0
+                },200);
+                obj.settings.onHideMenu();
+            }
+        });
+    }
+}
 
-var defaults = {'event1':1,'event2':2,'event3':3};
-var options = {'event2':4};
-var ret = Mansion.Functions.extend(defaults, options);
-console.log(ret);
+var obj = new Mansion.Functions.mobile({
+    mobile_icon: $('.mobile-icon'),
+    mobile_menu: $('.mobile-menu'),
+    menu: $('.menu'),
+    onShowMenu: function(){
+
+    },
+    onHideMenu: function(){
+
+    },
+});
+obj.setmobile();
+
+window.onload = function(){
+    $(".body-bg").addClass('loader');
+    $(".left-acide").addClass('body-loader');
+    $(".title-logo").addClass('title-logo-loader');
+};

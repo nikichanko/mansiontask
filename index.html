@@ -3,29 +3,52 @@
 	<head>
 		<title>My Web Site</title>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	</head>
 	<body>
-		<header>
+		<div class="mobile-menu" style="display:none"></div>
+		<header class="header">
 			<nav>
-				<ul>
-					<li>
-						<a href="#">Men1</a>
-						<a href="#">Men2</a>
-						<a href="#">Men3</a>
-						<a href="#">Men4</a>
-				
-				
-					</li>
+				<ul class="menu">
+					<li><a href="index.html">Home</a><span class="menu-hover"></span></li>
+					<li><a href="#">Play Game</a><span class="menu-hover"></span></li>
+					<li><a href="#">Results</a><span class="menu-hover"></span></li>
+					<li><a href="#">About</a><span class="menu-hover"></span></li>
 				</ul>
 			</nav>
 		</header>
-		<section>
-			
-		</section>
-		<div>
-			<button id="niki">Click me</button>
-		</div>
+		<div class="body-bg"></div>
 		<div class="wrapper">
+			<div class="mobile-icon" style="display:none"></div>
+			<acide class="left-acide">
+				<img src="images/pharaoh.png"/>
+			</acide>
+			<section class="middle-section">
+				<div class="title-logo">
+					<img src="images/logo_game.png"/>
+				</div>
+				<div class="inform">
+					Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+				</div>
+			</section>
+			<acide class="right-acide">
+				<p>Register Form</p>
+				<form id="reg_form" acion="register.php?action=register" method="post"><br />
+					<input type="email" name="email" placeholder="email" class="reg-input-text" /><br />
+					<input type="text" name="first_name" placeholder="fist name" class="reg-input-text" /><br />
+					<input type="text" name="username" placeholder="username" class="reg-input-text" /><br />
+					<input type="password" name="password" class="reg-input-text" placeholder="password"/><br />
+					<div class="roundedOne">
+						<input type="checkbox" id="terms" name="terms">
+						<label for="terms"></label>
+					</div>
+					<div class="terms-text">
+						By checking this box I agree to, <br/><a href="#">Terms & Conditions</a> of the site.
+					</div>
+					<br/>
+					<input type="submit" value="Register" />
+				</form>
+			</acide>
 		</div>
 		<script src="js/scripts.js"></script>
 	</body>
