@@ -2,17 +2,7 @@
 
 var Mansion = Mansion || {};
 Mansion.Functions = Mansion.Functions || {};
-/*
-Object.prototype.addEvents = function(){
-    var tar1 = this;
-            tar1.addEventListener("click", function(){
-            console.log('266');
-        }, false);
-    return tar1;
-}
 
-*/
-//extend is equvalent of jQuery $.extend function
 Mansion.Functions.extend = function (defaults, options) {
     this.defaults = defaults;
     this.options = options;
@@ -36,50 +26,56 @@ Mansion.Functions.extend = function (defaults, options) {
 
 Mansion.Functions.mobile = function(options){
     var defaults = {
-        mobile_icon: null,
-        mobile_menu: null,
-        menu: null,
-        onShowMenu: function(){},
-        onHideMenu: function(){}
+        mobile_icon: $('.mobile-icon'),
+        mobile_menu: $('.mobile-menu'),
+        menu:  $('.menu'),
+        onShowMenu: function(){
+            if(!$('.close-mobile-icon').length){
+                obj.settings.mobile_menu.prepend('<div class="close-mobile-icon"></div>');
+               $('.close-mobile-icon').on('click', function(e){
+                   e.preventDefault;
+                   obj.toggleMobile();
+               })
+            }
+            $('#container, #footer').addClass('active');
+            obj.settings.mobile_menu.show();
+        },
+        onHideMenu: function(){
+            $('#container, #footer').removeClass('active');
+            obj.settings.mobile_menu.hide();
+        }
     };
+    this.active = false;
     this.settings = Mansion.Functions.extend(defaults, options);
+    this.toggleMobile = function(){
+        if(!$.trim(obj.settings.mobile_menu.html())){
+            //if not visible and empty mobile menu build mobile menu
+            obj.settings.mobile_menu.append(obj.settings.menu.clone());
+        }
+        if(!obj.settings.mobile_menu.is(":visible")){
+            obj.settings.onShowMenu();
+            this.active = true;
+        }else{
+            obj.settings.onHideMenu();
+        }
+    }
     Mansion.Functions.mobile.prototype.setmobile = function(){
         if(!this.settings.mobile_icon.length || !this.settings.mobile_menu.length || !this.settings.menu.length)
             return;
         var obj = this;
         obj.settings.mobile_icon.on('click', function(e){
             e.preventDefault;
-            // click on mobile icon
-            if(!$.trim(obj.settings.mobile_menu.html())){
-                //if not visible and empty mobile menu build mobile menu
-                obj.settings.mobile_menu.append(obj.settings.menu.clone());
-            }
-            if(!obj.settings.mobile_menu.is(":visible")){
-                obj.settings.mobile_menu.show('fast').animate({
-                    opacity: 1
-                },200);
-                obj.settings.onShowMenu();
-            }else{
-                               obj.settings.mobile_menu.hide('fast').animate({
-                                   opacity: 0
-                },200);
+            obj.toggleMobile();
+        }); 
+        $(window).on('resize', function(){
+            if(obj.active && !obj.settings.mobile_icon.is(':visible')){
                 obj.settings.onHideMenu();
             }
         });
     }
 }
 
-var obj = new Mansion.Functions.mobile({
-    mobile_icon: $('.mobile-icon'),
-    mobile_menu: $('.mobile-menu'),
-    menu: $('.menu'),
-    onShowMenu: function(){
-
-    },
-    onHideMenu: function(){
-
-    },
-});
+var obj = new Mansion.Functions.mobile();
 obj.setmobile();
 
 window.onload = function(){

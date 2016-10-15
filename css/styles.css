@@ -16,7 +16,7 @@ div.body-bg.loader{
 div.body-bg{
     background-size: cover;
     background-position: -20px;
-    height: 555px;
+    height: 100%;
     width:100%;
     position: absolute;
     box-sizing: border-box;
@@ -190,8 +190,8 @@ input[type="submit"]:hover, input[type="submit"]:active{
 .terms-text{
     display: inline-block;
     color: #fff;
-        font-size: 15px;
-            text-shadow: 0 2px 2px rgba(0, 0, 0, 0.53);
+    font-size: 15px;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.53);
 }
 .terms-text a{
     color: #f5f6a4;
@@ -200,13 +200,82 @@ input[type="submit"]:hover, input[type="submit"]:active{
 #terms{
     margin: 0;
 }
+#footer {
+    padding: 30px 20px 20px 20px;
+    margin: 0 0 10px 0;
+    display: table;
+    background: rgb(254,252,234);
+    background: -moz-linear-gradient(top, rgb(217, 149, 26) 0%, rgba(241,218,54,1) 100%);
+    background: -webkit-linear-gradient(top, rgb(217, 149, 26) 0%,rgba(241,218,54,1) 100%);
+    background: linear-gradient(to bottom, rgb(217, 149, 26) 0%,rgba(241,218,54,1) 100%);
+    width: 100%;
+    box-sizing: border-box;
+    color: #6c4a01;
+}
+#footer.active{
+    position: fixed;
+    top:100%;
+}
+#footer .copy-right, #footer .footer-menu{
+    display: table-cell;
+    position: relative;
+}
 
-.mobile-icon {
-position: relative;
+#footer .footer-menu{
+    text-align: right
+}
+.footer-menu ul{
+    list-style-type: none;
+}
+.footer-menu li{
+    display: inline-block;
+    margin: 0 5px;
+    position: relative;
+}
+.footer-menu li a{
+    color: #6c4a01;
+}
+.mobile-icon{
+    position: relative;
     padding-left: 20px;
     height: 33px;
     width: 33px;
     cursor: pointer;
+}
+.close-mobile-icon{
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.close-mobile-icon:hover::before, .close-mobile-icon:hover::after {
+  background: #0055a7;;
+}
+.close-mobile-icon::before, .close-mobile-icon::after {
+  content: '';
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #000;
+}
+.close-mobile-icon::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close-mobile-icon::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 .mobile-icon:before {
     content: "";
@@ -218,20 +287,35 @@ position: relative;
     border-top: 10px double #ffe5ab;
     border-bottom: 3px solid #ffe5ab;
 }
-
 .mobile-menu{
-    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    width: 280px;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.mobile-menu .menu{
+    margin: 10px 0 0 0;
+}
+.mobile-menu ul.menu>li{
+    display: block;
+}
+.mobile-menu  .menu-hover{
+    display: none;
+}
+#container{
+    position: relative;
+    height: 555px;
+}
+#container.active{
+    transition: transform 200ms cubic-bezier(0.2, 0.3, 0.25, 0.9);
+    -webkit-transform: translate3d(280px, 0, 0);
+    transform: translate3d(280px, 0, 0);
     position: fixed;
+    opacity: 0.7;
 }
-.mobile-menu.toggled{
-    opacity: 1;
-    visibility: visible;
-    top: 0px;
-    height: 200px;
-    -webkit-transition: top 1s, height 1s;
-    -moz-transition: top 1s, height 1s;
-    transition: top 1s, height 1s;
-}
+
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #b8e6a2;
   font-size: 16px;
@@ -324,11 +408,14 @@ position: relative;
         display: block;
         margin: 0 auto;
     }
-    .inform, .header{
-        display: none;
+    .inform, .header, .footer-menu{
+        display: none !important;
     }
     .mobile-icon{
         display: block !important;
+    }
+    #footer .copy-right{
+        text-align: center;
     }
     .middle-section{
         padding: 5px;
