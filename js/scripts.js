@@ -3,6 +3,8 @@
 var Mansion = Mansion || {};
 Mansion.Functions = Mansion.Functions || {};
 
+
+// Some Global Functions
 Mansion.Functions.extend = function (defaults, options) {
     this.defaults = defaults;
     this.options = options;
@@ -87,7 +89,6 @@ Mansion.Functions.xmlhttpRequest = function(options){
     }
 };
 
-
 Mansion.Functions.validation = function(form, options){
     var defaults = {
         validated_fields : {
@@ -113,6 +114,15 @@ Mansion.Functions.validation = function(form, options){
         return noval;
     }
     return this.notValidated();
+}
+
+Mansion.Functions.fadeTwoElements = function(el_show, el_hide){
+    if(!el_show.length || !el_hide.length)
+        return;
+    el_hide.fadeOut(100);
+    setTimeout(function(){
+        el_show.fadeIn(100);
+    },200);
 }
 
 Mansion.Functions.mobile = function(options){
@@ -165,26 +175,76 @@ Mansion.Functions.mobile = function(options){
         });
     }
 }
+// End Global Functions
 
-Mansion.Functions.fadeTwoElements = function(el_show, el_hide){
-    if(!el_show.length || !el_hide.length)
-        return;
-    el_hide.fadeOut(100);
-    setTimeout(function(){
-        el_show.fadeIn(100);
-    },200);
+// Toogle Form Validation Error on Change input
+function toggleRegErrorChange(form, el){
+    this.form = form;
+    this.el = el;
+
+    this.toggleRegError = function(){
+        this.form.find('.input-error').remove();
+        var not_validate = new Mansion.Functions.validation(this.form);
+        var input_name = $(this.el).prop('name');
+        var input_value = $(this.el).val().trim();
+        if(input_value == '' || input_value.length <= 1){
+            return;
+        }
+        $(this.el).removeClass('input-error-field');
+        if(not_validate && not_validate.length){
+            for(var i in not_validate){
+                if(not_validate[i].name == input_name){
+                    var input = this.form.find('[name="'+not_validate[i].name+'"]');
+                    if(input.length){
+                        input.addClass('input-error-field');
+                        input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
+                    }
+                }
+            }
+        }
+    } 
+    this.toggleRegError();
 }
 
+// Toggle Form Validation Error on Form Submit
+function toggleRegErrorSubmit(form){
+    this.form = form;
+    this.validated = false;
+    this.toggleRegError = function(){
+        this.form.find('.input-error').remove();
+        var not_validate = new Mansion.Functions.validation(this.form);
+        if(not_validate && not_validate.length){
+            //not validated build some error functionality
+            var j=0;
+            for(var i in not_validate){
+                var input = this.form.find('[name="'+not_validate[i].name+'"]');
+                if(input.length && j==0){
+                    input.addClass('input-error-field');
+                    input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
+                }else{
+                    input.removeClass('input-error-field');
+                }
+                j++;
+            }
+        }else{
+            this.validated = true;
+        }
+    }
+    this.toggleRegError();
+}
+
+//Set Responive/Mobile Layout
 var obj = new Mansion.Functions.mobile();
 obj.setmobile();
 
+//add animation when page load
 window.onload = function(){
     $(".body-bg").addClass('loader');
-    $(".left-acide").addClass('body-loader');
-    $(".title-logo").addClass('title-logo-loader');
+    $(".left-acide").addClass('loader');
+    $(".title-logo").addClass('loader');
 };
 
-// Step1 and Step3 form inputs onchange validation
+// form inputs onchange validation
 $("form .reg-input-text, form input[type='checkbox']")
     .on('keyup paste change', function(){
         toggleRegErrorChange($("#step1 form, #step3 form"),this);
@@ -236,7 +296,7 @@ $('#step2 #continue_btn').on('click', function(e){
     },200);
 })
 
-//Step 3 From submit (Registration 2)
+//Step 3 Form submit (Registration 2)
 $("#step3 form").on('submit', function(e){
     e.preventDefault();
 
@@ -267,57 +327,3 @@ $("#step3 form").on('submit', function(e){
         xobj.doRequest();
     }
 });
-
-function toggleRegErrorChange(form, el){
-    this.form = form;
-    this.el = el;
-
-    this.toggleRegError = function(){
-        this.form.find('.input-error').remove();
-        var not_validate = new Mansion.Functions.validation(this.form);
-        var input_name = $(this.el).prop('name');
-        var input_value = $(this.el).val().trim();
-        if(input_value == '' || input_value.length <= 1){
-            return;
-        }
-        $(this.el).removeClass('input-error-field');
-        if(not_validate && not_validate.length){
-            for(var i in not_validate){
-                if(not_validate[i].name == input_name){
-                    var input = this.form.find('[name="'+not_validate[i].name+'"]');
-                    if(input.length){
-                        input.addClass('input-error-field');
-                        input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
-                    }
-                }
-            }
-        }
-    } 
-    this.toggleRegError();
-}
-
-function toggleRegErrorSubmit(form){
-    this.form = form;
-    this.validated = false;
-    this.toggleRegError = function(){
-        this.form.find('.input-error').remove();
-        var not_validate = new Mansion.Functions.validation(this.form);
-        if(not_validate && not_validate.length){
-            //not validated build some error functionality
-            var j=0;
-            for(var i in not_validate){
-                var input = this.form.find('[name="'+not_validate[i].name+'"]');
-                if(input.length && j==0){
-                    input.addClass('input-error-field');
-                    input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
-                }else{
-                    input.removeClass('input-error-field');
-                }
-                j++;
-            }
-        }else{
-            this.validated = true;
-        }
-    }
-    this.toggleRegError();
-}

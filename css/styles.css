@@ -75,7 +75,7 @@ div.body-bg{
     font-size: 40px;
     text-align: center;
 }
-.left-acide.body-loader{
+.left-acide.loader{
     opacity: 1;
     left: 0;
 }
@@ -89,7 +89,7 @@ div.body-bg{
 .left-acide img{
     width:100%;
 }
-div.title-logo.title-logo-loader{
+div.title-logo.loader{
     opacity: 1;
     transform: rotateY(0deg);
 }
