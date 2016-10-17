@@ -185,6 +185,7 @@ ul.menu>li>a:hover ~ .menu-hover{
     font-size: 30px;
     font-family: Akura Popo;
     letter-spacing: 2px;
+    line-height: 40px;
 }
 .right-acide p{
     font-size: 16px;
