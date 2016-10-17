@@ -112,6 +112,9 @@ div.title-logo{
     transition: opacity 0.8s, transform 1.6s;
     transition-delay: 0.3s;
 }
+.title-logo img{
+    height: 100%;
+}
 div.title-logo-loader img{
     width:100%;
     max-width: 300px;
