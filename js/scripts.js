@@ -48,17 +48,53 @@ Mansion.Functions.getFormInputs = function(form){
     return  obj;
 }
 
+Mansion.Functions.xmlhttpRequest = function(options){
+    var defaults = {
+        url: '',
+        type: 'GET',
+        params: '',
+        onCompleteRequest: function(){},
+        onStartRequest: function(){},
+        onError404: function(){console.log("Error 400")},
+        onErrorAll: function(){console.log("Other error")}
+    };
+    this.settings = Mansion.Functions.extend(defaults, options);
+    this.xmlhttp = new XMLHttpRequest();
+ 
+    Mansion.Functions.xmlhttpRequest.prototype.doRequest = function(){
+        var obj = this;
+
+        //open xml request
+        obj.xmlhttp.open(obj.settings.type, obj.settings.url, true);
+        obj.settings.onStartRequest();
+
+        //result for xml request
+        obj.xmlhttp.onreadystatechange = function() {
+            if (obj.xmlhttp.readyState == XMLHttpRequest.DONE ) {
+                if (obj.xmlhttp.status == 200) {
+                    obj.settings.onCompleteRequest();
+                }
+                else if (obj.xmlhttp.status == 400) {
+                    obj.settings.onError404();
+                }
+                else {
+                    obj.settings.onErrorAll();
+                }
+            }
+        }
+        //send xml request
+        obj.xmlhttp.send(obj.settings.params);
+    }
+};
+
+
 Mansion.Functions.validation = function(form, options){
     var defaults = {
         validated_fields : {
             username: { regex: /^.{4,12}$/g, error: 'Minium 4 Max 12 characters' },
-                // any characters with range from 4 to 12 characters
             password: { regex : /^(?=.*[a-z])(?=.*[A-Z])((?=.*\d)|(?=.*[\#@\$%\^&\*\(\)_\+-=])).{6,12}$/g, 
                         error: 'Minium 6 Max 12 characters. One lower-case letter, One capital letter, One number OR special character: !@#$%^&*()_+-=' },
-                // One lower-case letter, One capital letter, One number OR special character: !@#$%^&*()_+-=
-                // range from 6 to 12 characters
             terms: { regex: /^(?=.*1).{1}$/g, error: 'Need to accept Terms & Conditions'}
-                // expect only 1 to be valid
         }
     };
     this.form = form;
@@ -88,7 +124,7 @@ Mansion.Functions.mobile = function(options){
             if(!$('.close-mobile-icon').length){
                 obj.settings.mobile_menu.prepend('<div class="close-mobile-icon"></div>');
                $('.close-mobile-icon').on('click', function(e){
-                   e.preventDefault;
+                   e.preventDefault();
                    obj.toggleMobile();
                })
             }
@@ -119,7 +155,7 @@ Mansion.Functions.mobile = function(options){
             return;
         var obj = this;
         obj.settings.mobile_icon.on('click', function(e){
-            e.preventDefault;
+            e.preventDefault();
             obj.toggleMobile();
         }); 
         $(window).on('resize', function(){
@@ -128,6 +164,15 @@ Mansion.Functions.mobile = function(options){
             }
         });
     }
+}
+
+Mansion.Functions.fadeTwoElements = function(el_show, el_hide){
+    if(!el_show.length || !el_hide.length)
+        return;
+    el_hide.fadeOut(100);
+    setTimeout(function(){
+        el_show.fadeIn(100);
+    },200);
 }
 
 var obj = new Mansion.Functions.mobile();
@@ -139,57 +184,140 @@ window.onload = function(){
     $(".title-logo").addClass('title-logo-loader');
 };
 
-function toggleError(el){
-    var not_validate = new Mansion.Functions.validation($("#reg_form"));
-    var input_name = $(el).prop('name');
-    var input_value = $(el).val().trim();
-    $(el).removeClass('input-error-field');
-    $("#reg_form").find('.input-error').remove();
-    if(input_value == '' || input_value.length <= 1){
-        return;
-    }
-    if(not_validate && not_validate.length){
-        for(var i in not_validate){
-            if(not_validate[i].name == input_name){
-                var input = $("#reg_form").find('[name="'+not_validate[i].name+'"]');
-                if(input.length){
-                    input.addClass('input-error-field');
-                    $('<div class="input-error">'+not_validate[i].error+'<span></span></div>').insertAfter(input);
-                }
-            }
-
-        }
-    }
-}
-
-$("#reg_form .reg-input-text")
-    .on('keyup paste', function(){
-        toggleError(this);
+// Step1 and Step3 form inputs onchange validation
+$("form .reg-input-text, form input[type='checkbox']")
+    .on('keyup paste change', function(){
+        toggleRegErrorChange($("#step1 form, #step3 form"),this);
     })
     .focus(function(){
-       toggleError(this); 
+       toggleRegErrorChange($("#step1 form, #step3 form"),this); 
     });
 
-$("#reg_form").on('submit', function(e){
-    e.preventDefault;
-    var not_validate = new Mansion.Functions.validation($(this));
-    $(this).find('.input-error').remove();
-    if(not_validate && not_validate.length){
-        //not validated build some error functionality
-        var j=0;
-        for(var i in not_validate){
-            var input = $(this).find('[name="'+not_validate[i].name+'"]');
-            if(input.length && j==0){
-                input.addClass('input-error-field');
-                $('<div class="input-error">'+not_validate[i].error+'<span></span></div>').insertAfter(input);
-            }else{
-                input.removeClass('input-error-field');
-            }
-            j++;
-        }
-    }else{
-        //validated do ajax request of the form
-    }
+// STEP 1 submit registration form
+$("#step1 form").on('submit', function(e){
+    e.preventDefault();
 
-    return false;
+    var form = $(this);
+    if(new toggleRegErrorSubmit(form).validated)
+    {
+        //validated do xmlhttp request of the form
+        var xobj = new Mansion.Functions.xmlhttpRequest({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            params: form.serialize(),
+            onStartRequest: function(){
+                $('.img-loader').show();
+                xobj.xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            },
+            onCompleteRequest: function(){
+                $('.img-loader').hide();
+                var response = xobj.xmlhttp.responseText;
+                    object = JSON && JSON.parse(response);
+                if(object.hasOwnProperty('status') && object.hasOwnProperty('username') && object.status == '1' && object.username != ""){
+                    // show STEP 2 hide STEP 1
+                    $("#step3 form").append($('<input type="hidden" value="'+object.username+'" name="username" />'));
+                    Mansion.Functions.fadeTwoElements($('#step2'), $('#step1'));
+                }else{
+                    console.log('Not successful registration');
+                }
+            } 
+        });
+        xobj.doRequest();
+    }
 });
+
+//STEP 2 Continue Registration button click
+$('#step2 #continue_btn').on('click', function(e){
+    e.preventDefault();
+    // show STEP 3 hide STEP 2
+    $('#step2').fadeOut(100);
+    setTimeout(function(){
+        $('#step3').fadeIn(100);
+    },200);
+})
+
+//Step 3 From submit (Registration 2)
+$("#step3 form").on('submit', function(e){
+    e.preventDefault();
+
+    var form = $(this);
+    if(new toggleRegErrorSubmit(form).validated)
+    {
+        //validated do xmlhttp request of the form
+        var xobj = new Mansion.Functions.xmlhttpRequest({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            params: form.serialize(),
+            onStartRequest: function(){
+                $('.img-loader').show();
+                xobj.xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            },
+            onCompleteRequest: function(){
+                $('.img-loader').hide();
+                var response = xobj.xmlhttp.responseText;
+                    object = JSON && JSON.parse(response);
+                if(object.hasOwnProperty('status') && object.hasOwnProperty('username') && object.status == '2' && object.username != ""){
+                    // show STEP 4 hide STEP 3
+                    Mansion.Functions.fadeTwoElements($('#step4'), $('#step3'));
+                }else{
+                    console.log('Not successful registration');
+                }
+            } 
+        });
+        xobj.doRequest();
+    }
+});
+
+function toggleRegErrorChange(form, el){
+    this.form = form;
+    this.el = el;
+
+    this.toggleRegError = function(){
+        this.form.find('.input-error').remove();
+        var not_validate = new Mansion.Functions.validation(this.form);
+        var input_name = $(this.el).prop('name');
+        var input_value = $(this.el).val().trim();
+        if(input_value == '' || input_value.length <= 1){
+            return;
+        }
+        $(this.el).removeClass('input-error-field');
+        if(not_validate && not_validate.length){
+            for(var i in not_validate){
+                if(not_validate[i].name == input_name){
+                    var input = this.form.find('[name="'+not_validate[i].name+'"]');
+                    if(input.length){
+                        input.addClass('input-error-field');
+                        input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
+                    }
+                }
+            }
+        }
+    } 
+    this.toggleRegError();
+}
+
+function toggleRegErrorSubmit(form){
+    this.form = form;
+    this.validated = false;
+    this.toggleRegError = function(){
+        this.form.find('.input-error').remove();
+        var not_validate = new Mansion.Functions.validation(this.form);
+        if(not_validate && not_validate.length){
+            //not validated build some error functionality
+            var j=0;
+            for(var i in not_validate){
+                var input = this.form.find('[name="'+not_validate[i].name+'"]');
+                if(input.length && j==0){
+                    input.addClass('input-error-field');
+                    input.parent().closest('div').append($('<div class="input-error">'+not_validate[i].error+'<span></span></div>'));
+                }else{
+                    input.removeClass('input-error-field');
+                }
+                j++;
+            }
+        }else{
+            this.validated = true;
+        }
+    }
+    this.toggleRegError();
+}

@@ -2,6 +2,10 @@
 <html lang="en-US">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="description" content="Casino Game The Richest Pharaoh">
+		<meta name="keywords" content="casio, games, game, egypt, pharaoh, rich">
+		<meta name="author" content="Nikoalay Nikolov">
+		<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1,  maximum-scale=2">
 		<title>My Web Site</title>
 		<link rel="stylesheet" type="text/css" href="css/styles.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -27,37 +31,79 @@
 				</acide>
 				<section class="middle-section">
 					<div class="title-logo">
-						<img src="images/logo_game.png"/>
+						<a href="index.html" title="The Richest Pharaoh"><img src="images/logo_game.png"/></a>
 					</div>
 					<div class="inform">
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+						Pharaohs were richest men of the world!<br/>Become like them!
 					</div>
 				</section>
 				<acide class="right-acide">
-					<p>Register Form</p>
-					<form id="reg_form" acion="register.php?action=register" method="post"><br />
-						<div class="reg-input">
-							<input type="email" name="email" placeholder="email" class="reg-input-text" />
-						</div>
-						<div class="reg-input">
-							<input type="text" name="first_name" placeholder="fist name" class="reg-input-text" />
-						</div>
-						<div class="reg-input">
-							<input type="text" name="username" placeholder="username" class="reg-input-text" />
-						</div>
-						<div class="reg-input">
-							<input type="password" name="password" class="reg-input-text" placeholder="password"/>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" id="terms" name="terms">
-							<label for="terms"></label>
-						</div>
-						<div class="terms-text">
-							By checking this box I agree to, <br/><a href="#">Terms & Conditions</a> of the site.
-						</div>
-						<br/>
-						<input type="submit" value="Register" />
-					</form>
+					<section id="step1">
+						<h3>Join us</h3>
+						<form action="script/centraladmin.php?action=registration" method="post">
+							<div class="reg-input">
+								<input type="email" name="email" placeholder="email" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="text" name="first_name" placeholder="fist name" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="text" name="username" placeholder="username" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="password" name="password" class="reg-input-text" placeholder="password"/>
+							</div>
+							<div class="checkbox">
+								<input type="checkbox" id="terms" name="terms">
+								<label for="terms"></label>
+							</div>
+							<div class="terms-text">
+								By checking this box I agree to, <br/><a href="#">Terms & Conditions</a> of the site.
+							</div>
+							<br/>
+							<div class="img-loader" style="display:none"></div>
+							<input type="submit" value="Register" />
+						</form>
+					</section>
+					<section id="step2" style="display: none">
+						<h3>You’re ready to play!</h3>
+						<p>In order to play with real money, you will need to provide more information. 
+						You can do so now if you wish, or skip and do it at a later time
+						</p>
+						<span class="button" id="continue_btn">Continue Registration</span>
+						<a href="http://www.casino.com" class="button" id="skip_btn">Skip</a>
+					</section>
+					<section id="step3" style="display: none">
+						<form id="reg_form_2" action="script/centraladmin.php?action=registration2" method="post">
+							<div class="reg-input">
+								<input type="email" name="address1" placeholder="Address 1" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="text" name="address2" placeholder="Address 2" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="text" name="postal_code" placeholder="Postal Code" class="reg-input-text" />
+							</div>
+							<div class="reg-input">
+								<input type="password" name="phone_number"  placeholder="Phone Number" class="reg-input-text"/>
+							</div>
+							<div class="terms-text">
+								Do you have a bonus code? Click <span class="show-bonus-code" onclick="$('input[name=\'bonus_code\']').css('opacity',1)">here</span>.
+							</div>
+							<br />
+							<div class="reg-input">
+								<input type="password" name="bonus_code"  placeholder="Bonus Code" class="reg-input-text" style="opacity:0"/>
+							</div>
+							<div class="img-loader" style="display:none"></div>
+							<input type="submit" value="Register" />
+						</form>
+					</section>
+					<section id="step4" style="display: none">
+						<h3>Thank you</h3>
+						<p>You can now play with real money. Have fun, and good luck!</p>
+						<a href="http://www.casino.com/casino-games/" class="button" id="play_btn">Play Now</a>
+						<a href="http://www.casino.com/promotions/" class="button" id="promotions_btn">Promotions</a>
+					</section>
 				</acide>
 			</div>
 		</div>
