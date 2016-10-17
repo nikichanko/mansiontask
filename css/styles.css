@@ -553,6 +553,9 @@ div.input-error span:before{
     }
 }
 @media screen and (max-width: 680px) {
+    #container{
+        height:570px;
+    }
     .right-acide, .middle-section{
         display: block;
         margin: 0 auto;
