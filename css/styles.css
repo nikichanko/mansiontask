@@ -195,7 +195,7 @@ ul.menu>li>a:hover ~ .menu-hover{
 .right-acide p{
     font-size: 16px;
 }
-.right-acide section{
+.right-acide>div{
     position: relative;
 }
 @-webkit-keyframes rotating {
