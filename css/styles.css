@@ -26,7 +26,6 @@ body{
     background: -webkit-linear-gradient(left,  rgba(250,255,170,1) 0%,rgba(252,252,252,1) 100%);
     background: linear-gradient(to right,  rgba(250,255,170,1) 0%,rgba(252,252,252,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faffaa', endColorstr='#fcfcfc',GradientType=1 );
-    background: -moz-linear-gradient(left,  #fcfcfc 28%, #f1da36 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#f1da36',GradientType=1 );
 }
 #container{
