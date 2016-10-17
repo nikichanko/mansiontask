@@ -11,21 +11,18 @@ body{
     margin: 0 auto;
     font-family: Tahoma, Verdana, Segoe, sans-serif;
     max-width: 1366px;
-    margin-top: 10px;
 }
 #header.header-loader{
     opacity: 1;
     left:0;
 }
 #header{
-    top: 10px;
+    top: 0px;
     z-index: 3;
     position: fixed;
     display: block;
     width: 100%;
     max-width: 1366px;
-    box-sizing: border-box;
-    border: 1px solid rgba(54, 32, 2, 0.4);
     background: rgb(250,255,170);
     background: -moz-linear-gradient(left,  rgba(250,255,170,1) 0%, rgba(252,252,252,1) 100%);
     background: -webkit-linear-gradient(left,  rgba(250,255,170,1) 0%,rgba(252,252,252,1) 100%);
