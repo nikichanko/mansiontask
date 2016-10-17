@@ -8,15 +8,17 @@
     font-family: Topic;
 }
 body{
-    margin:0;
+    margin: 0 auto;
     font-family: Tahoma, Verdana, Segoe, sans-serif;
+    max-width: 1366px;
+    margin-top: 10px;
 }
 #header.header-loader{
     opacity: 1;
     left:0;
 }
 #header{
-    top: 0;
+    top: 10px;
     z-index: 3;
     position: fixed;
     display: block;
@@ -555,6 +557,9 @@ div.input-error span:before{
 @media screen and (max-width: 680px) {
     #container{
         height:570px;
+    }
+    body{
+        margin:0;
     }
     .right-acide, .middle-section{
         display: block;
